@@ -1,6 +1,6 @@
 # Setup
 
-So I've used pnpm as the package manager for this, if you have it please move on to the next step. If you dont first install pnpm. Heres the (https://pnpm.io/installation)[link].
+So I've used pnpm as the package manager for this, if you have it please move on to the next step. If you dont first install pnpm. Heres the installation [link](https://pnpm.io/installation).
 
 For Mac its as easy as
 ```
