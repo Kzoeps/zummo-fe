@@ -1,19 +1,23 @@
 <script>
 	import Header from './Header.svelte';
+	import { SvelteUIProvider, Button } from '@svelteuidev/core';
 	import './styles.css';
 </script>
 
-<div class="app">
-	<Header />
+<SvelteUIProvider>
+	<div class="app">
+		<Header />
 
-	<main>
-		<slot />
-	</main>
+		<Button color="pink" >ClickMEE</Button>
+		<main>
+			<slot />
+		</main>
 
-	<footer>
-		<p>visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to learn SvelteKit</p>
-	</footer>
-</div>
+		<footer>
+			<p>visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to learn SvelteKit</p>
+		</footer>
+	</div>
+</SvelteUIProvider>
 
 <style>
 	.app {
