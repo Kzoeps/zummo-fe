@@ -8,3 +8,7 @@ pnpm dev
 ```
  
 and it should run the app on `localhost:3000`. Open up your browser and go there to see the app running.
+
+# Packages
+
+I've installd `svelteui` as our component library.

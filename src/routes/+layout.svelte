@@ -1,4 +1,5 @@
 <script>
+	import "../app.css"
 	import Header from './Header.svelte';
 	import { SvelteUIProvider, Button } from '@svelteuidev/core';
 	import './styles.css';
@@ -8,6 +9,7 @@
 	<div class="app">
 		<Header />
 
+		<h1 class="text-3xl fontbold underline" >Hello Worlld</h1>
 		<Button color="pink" >ClickMEE</Button>
 		<main>
 			<slot />
