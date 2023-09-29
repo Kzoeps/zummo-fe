@@ -30,6 +30,7 @@
 	"type": "module",
 	"dependencies": {
 		"@svelteuidev/composables": "^0.15.3",
-		"@svelteuidev/core": "^0.15.3"
+		"@svelteuidev/core": "^0.15.3",
+		"airtable": "^0.12.2"
 	}
 }
