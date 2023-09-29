@@ -16,11 +16,8 @@ export async function load({ url: pageURL }) {
 	const number = pageURL.searchParams.get('number');
 	if (!number) return { records: [], phone: '', content: '' };
 	const data = await getRecord(number);
-	return {
-		records: data,
-		phone: `1892329`,
-		content: `This is the content for thimphu`
-	};
+	console.log(data)
+	return data;
 }
 export const actions = {
 	default: async ({ url, request }) => {
