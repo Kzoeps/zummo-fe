@@ -7,10 +7,6 @@
 
 <SvelteUIProvider>
 	<div class="app">
-		<Header />
-
-		<h1 class="text-3xl fontbold underline" >Hello Worlld</h1>
-		<Button color="pink" >ClickMEE</Button>
 		<main>
 			<slot />
 		</main>
