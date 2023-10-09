@@ -1,7 +1,16 @@
 <script>
-	import { SimpleGrid, Card, Text, Button, Input, Flex } from '@svelteuidev/core';
+	import { Modal, SimpleGrid, Card, Text, Button, Input, Flex, TextInput } from '@svelteuidev/core';
+	import MdiPen from 'virtual:icons/mdi/pen';
+
 	export let data;
 	let number = '';
+	let showModal = false;
+	let modalData = {};
+
+	const handleModalOpen = () => {
+		showModal = true;
+		modalData = data?.records?.[0]?.fields ? { ...data.records[0].fields } : {};
+	}
 	const getName = (record) => {
 		return `${record['First Name']} ${record['Last Name']}`;
 	};
@@ -10,25 +19,29 @@
 		return `${record['Street Address']}, ${record['City']}, ${record['State']}, ${record['Zip']}`;
 	};
 
+	const closeModal = () => {
+		showModal = false;
+	}
+
 	// all the logic below is to format the phone number like this: (214) 180-1323
 	// since it is saved like this in airtable and we need to filter and search for it in the exact fashion
 	// lemme know if you have a smarter way to do this.
 	const handleNumber = (e) => {
-		let num = e.target.value
+		let num = e.target.value;
 		const split_number = num.split('').filter((n) => !isNaN(n) && n !== ' ');
-		let res = ''
-		split_number.forEach((num,i) => {
+		let res = '';
+		split_number.forEach((num, i) => {
 			if (i === 0) {
-				res = `(${num}`
+				res = `(${num}`;
 			} else if (i === 2) {
-				res += `${num}) `
+				res += `${num}) `;
 			} else if (i === 5) {
-				res += `${num}-`
+				res += `${num}-`;
 			} else {
-				res += num
+				res += num;
 			}
-		})
-		number = res
+		});
+		number = res;
 	};
 </script>
 
@@ -46,23 +59,43 @@
 			<Button type="submit">Search</Button>
 		</Flex>
 	</form>
-	<SimpleGrid style="margin: 1em" cols={2} >
+	<SimpleGrid style="margin: 1em" cols={2}>
 		{#each data.records as record}
-			<Card style="padding: 2em">
-				<Card.Section style="margin-bottom: 1em">
-					<Text><span style="font-weight: bold;">Name: </span>{getName(record.fields)}</Text>
-				</Card.Section>
-				<Card.Section style="margin-bottom: 1em">
-					<Text
-						><span style="font-weight: bold;" >Phone Number: </span>{record?.fields?.[
-							'Phone Number'
-						]}</Text
-					>
-				</Card.Section>
-				<Card.Section style="margin-bottom: 1em">
-					<Text><span style="font-weight: bold;">Address: </span>{getAddy(record.fields)}</Text>
-				</Card.Section>
-			</Card>
+			<div style="position: relative">
+				<Card style="padding: 2em">
+					<Card.Section style="margin-bottom: 1em">
+						<Text><span style="font-weight: bold;">Name: </span>{getName(record.fields)}</Text>
+					</Card.Section>
+					<Card.Section style="margin-bottom: 1em">
+						<Text
+							><span style="font-weight: bold;">Phone Number: </span>{record?.fields?.[
+								'Phone Number'
+							]}</Text
+						>
+					</Card.Section>
+					<Card.Section style="margin-bottom: 1em">
+						<Text><span style="font-weight: bold;">Address: </span>{getAddy(record.fields)}</Text>
+					</Card.Section>
+				</Card>
+				<Button
+				on:click={handleModalOpen}
+					style="width: 50px; border-radius: 50%; height: 50px; position: absolute; right: -10px; top: -10px"
+					><MdiPen /></Button
+				>
+			</div>
 		{/each}
 	</SimpleGrid>
+	<Modal opened={showModal} on:close={closeModal} title="Details">
+        <TextInput label="First Name" name="First Name" bind:value={modalData['First Name']} />
+        <TextInput label="Last Name" name="Last Name" bind:value={modalData['Last Name']} />
+        <TextInput label="Phone Number" name="Phone Number" bind:value={modalData['Phone Number']} />
+		<TextInput label="Street Address" name="Street Address" bind:value={modalData['Street Address']} />
+		<TextInput label="City" name="City" bind:value={modalData['City']} />
+		<TextInput label="Zip" name="Zip" bind:value={modalData['Zip']} />
+		<TextInput label="State" name="State" bind:value={modalData['State']} />
+		<Flex gap="sm" mt={10} justify="right" >
+			<Button variant="outline" on:click={closeModal}>Cancel</Button>
+			<Button type="submit" on:click={() => console.log(data)}>Save</Button>
+		</Flex>
+	</Modal>
 </main>
