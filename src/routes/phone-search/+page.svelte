@@ -1,9 +1,16 @@
 <script>
-	import { SimpleGrid, Card, Text, Button, Input, Flex } from '@svelteuidev/core';
+	import { Modal, SimpleGrid, Card, Text, Button, Input, Flex, TextInput } from '@svelteuidev/core';
 	import MdiPen from 'virtual:icons/mdi/pen';
 
 	export let data;
 	let number = '';
+	let showModal = false;
+	let modalData = {};
+
+	const handleModalOpen = () => {
+		showModal = true;
+		modalData = data?.records?.[0]?.fields ? { ...data.records[0].fields } : {};
+	}
 	const getName = (record) => {
 		return `${record['First Name']} ${record['Last Name']}`;
 	};
@@ -11,6 +18,10 @@
 	const getAddy = (record) => {
 		return `${record['Street Address']}, ${record['City']}, ${record['State']}, ${record['Zip']}`;
 	};
+
+	const closeModal = () => {
+		showModal = false;
+	}
 
 	// all the logic below is to format the phone number like this: (214) 180-1323
 	// since it is saved like this in airtable and we need to filter and search for it in the exact fashion
@@ -67,10 +78,24 @@
 					</Card.Section>
 				</Card>
 				<Button
+				on:click={handleModalOpen}
 					style="width: 50px; border-radius: 50%; height: 50px; position: absolute; right: -10px; top: -10px"
 					><MdiPen /></Button
 				>
 			</div>
 		{/each}
 	</SimpleGrid>
+	<Modal opened={showModal} on:close={closeModal} title="Details">
+        <TextInput label="First Name" name="First Name" bind:value={modalData['First Name']} />
+        <TextInput label="Last Name" name="Last Name" bind:value={modalData['Last Name']} />
+        <TextInput label="Phone Number" name="Phone Number" bind:value={modalData['Phone Number']} />
+		<TextInput label="Street Address" name="Street Address" bind:value={modalData['Street Address']} />
+		<TextInput label="City" name="City" bind:value={modalData['City']} />
+		<TextInput label="Zip" name="Zip" bind:value={modalData['Zip']} />
+		<TextInput label="State" name="State" bind:value={modalData['State']} />
+		<Flex gap="sm" mt={10} justify="right" >
+			<Button variant="outline" on:click={closeModal}>Cancel</Button>
+			<Button type="submit" on:click={() => console.log(data)}>Save</Button>
+		</Flex>
+	</Modal>
 </main>
