@@ -1,13 +1,10 @@
 <script>
 	import { TextInput } from '@svelteuidev/core';
-	export let modalData = {
-		'First Name': '',
-		'Last Name': '',
-		'Phone Number': '',
-		'Street Address': '',
-		City: '',
-		Zip: '',
-		State: ''
+	import { CONTACT_MODAL, formatNumber } from '$lib/utils/contacts-utils.js';
+	export let modalData = { ...CONTACT_MODAL };
+	const checkNumberValidity = (number) => {
+		const formattedNumber = formatNumber(number);
+		modalData['Phone Number'] = formattedNumber;
 	};
 </script>
 
