@@ -2,10 +2,12 @@
 	import { Modal, SimpleGrid, Card, Text, Button, Input, Flex, TextInput } from '@svelteuidev/core';
 	import { CONTACT_MODAL, formatNumber } from '$lib/utils/contacts-utils.js'
 	import ContactInfo from '$lib/components/contacts/contact-info.svelte'
+	import { enhance } from '$app/forms'
 	
 	import MdiPen from 'virtual:icons/mdi/pen';
 
 	export let data;
+	export let form;
 	let number = '';
 	let showModal = false;
 	let showCreationModal = false;
@@ -92,8 +94,8 @@
 		</form>
 	</Modal>
 	<Modal opened={showCreationModal} on:close={() => {showCreationModal = false}} title="Create Contact" >
-		<form method="POST" action="?/createRecord">
-			<ContactInfo modalData={modalData}/>
+		<form method="POST" action="?/createRecord" use:enhance>
+			<ContactInfo form={form} modalData={modalData}/>
 			<Flex gap="sm" mt={10} justify="right">
 				<Button variant="outline" on:click={closeModal}>Cancel</Button>
 				<Button>Create</Button>
