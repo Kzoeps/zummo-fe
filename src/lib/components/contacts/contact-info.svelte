@@ -1,7 +1,8 @@
 <script>
-	import { TextInput } from '@svelteuidev/core';
+	import { Text, TextInput } from '@svelteuidev/core';
 	import { CONTACT_MODAL, formatNumber } from '$lib/utils/contacts-utils.js';
 	export let modalData = { ...CONTACT_MODAL };
+	export let form;
 	const checkNumberValidity = (number) => {
 		const formattedNumber = formatNumber(number);
 		modalData['Phone Number'] = formattedNumber;
@@ -18,6 +19,9 @@
 	bind:value={modalData['Phone Number']}
 	on:input={(e) => checkNumberValidity(e.target.value)}
 />
+{#if form?.inExistence}
+	<Text color="red">Contact already exists</Text>
+{/if}
 <TextInput
 	required
 	label="Street Address"

@@ -1,4 +1,5 @@
 import { redirect } from '@sveltejs/kit';
+import { fail } from '@sveltejs/kit';
 import { AIRTABLE_TOKEN } from '$env/static/private';
 
 const BASE_URL = 'https://api.airtable.com/v0/appr8SepSgx9SP6ir/tblXBR1YTXYvGhwWJ';
@@ -15,6 +16,14 @@ const getRecord = async (number) => {
 	});
 	return await response.json();
 };
+
+const checkValidPhoneNumber = async (number) => {
+	const { records } = await getRecord(number);
+	if (records.length > 0) {
+		return false;
+	}
+	return true;
+}
 
 export async function load({ url: pageURL }) {
 	const number = pageURL.searchParams.get('number');
@@ -44,5 +53,13 @@ export const actions = {
 			body: JSON.stringify(requestData) 
 		});
 		return await response.json();
+	},
+	createRecord: async ({ request }) => {
+		const data = await request.formData();
+		const phoneNumber = data.get('Phone Number');
+		const isValid = await checkValidPhoneNumber(phoneNumber);
+		if (!isValid) {
+			return fail(422, { phoneNumber, inExistence: true  });
+		}
 	}
 };
