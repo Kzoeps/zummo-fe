@@ -23,7 +23,7 @@ const checkValidPhoneNumber = async (number) => {
 		return false;
 	}
 	return true;
-}
+};
 
 export async function load({ url: pageURL }) {
 	const number = pageURL.searchParams.get('number');
@@ -45,12 +45,12 @@ export const actions = {
 		data.delete('id');
 		let url = `${BASE_URL}/${id}`;
 		const requestData = {
-			fields: JSON.stringify(Object.fromEntries(data)) 
+			fields: JSON.stringify(Object.fromEntries(data))
 		};
 		const response = await fetch(url, {
 			headers,
 			method: 'PATCH',
-			body: JSON.stringify(requestData) 
+			body: JSON.stringify(requestData)
 		});
 		return await response.json();
 	},
@@ -59,7 +59,21 @@ export const actions = {
 		const phoneNumber = data.get('Phone Number');
 		const isValid = await checkValidPhoneNumber(phoneNumber);
 		if (!isValid) {
-			return fail(422, { phoneNumber, inExistence: true  });
+			return fail(422, { phoneNumber, inExistence: true });
 		}
+		const parsedData = {
+			records: [
+				{
+					fields: Object.fromEntries(data)
+				}
+			]
+		}
+		console.log(parsedData);
+		const response = await fetch(BASE_URL, {
+			headers,
+			method: 'POST',
+			body: JSON.stringify(parsedData)
+		});
+		return await response.json();
 	}
 };
