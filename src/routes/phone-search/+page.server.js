@@ -5,7 +5,8 @@ import { AIRTABLE_TOKEN } from '$env/static/private';
 const BASE_URL = 'https://api.airtable.com/v0/appr8SepSgx9SP6ir/tblXBR1YTXYvGhwWJ';
 const headers = {
 	Authorization: `Bearer ${AIRTABLE_TOKEN}`,
-	'Content-Type': 'application/json'
+	'Content-Type': 'application/json',
+	'Accept': 'application/json'
 };
 
 const getRecord = async (number) => {
@@ -29,7 +30,6 @@ export async function load({ url: pageURL }) {
 	const number = pageURL.searchParams.get('number');
 	if (!number) return { records: [], phone: '', content: '' };
 	const data = await getRecord(number);
-	console.log(data);
 	return data;
 }
 export const actions = {
@@ -45,7 +45,7 @@ export const actions = {
 		data.delete('id');
 		let url = `${BASE_URL}/${id}`;
 		const requestData = {
-			fields: JSON.stringify(Object.fromEntries(data))
+			fields: Object.fromEntries(data)
 		};
 		const response = await fetch(url, {
 			headers,
@@ -68,7 +68,6 @@ export const actions = {
 				}
 			]
 		}
-		console.log(parsedData);
 		const response = await fetch(BASE_URL, {
 			headers,
 			method: 'POST',

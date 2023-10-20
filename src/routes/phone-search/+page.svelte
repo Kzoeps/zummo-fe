@@ -1,5 +1,5 @@
 <script>
-	import { Modal, SimpleGrid, Card, Text, Button, Input, Flex, TextInput } from '@svelteuidev/core';
+	import { Notification, Modal, SimpleGrid, Card, Text, Button, Input, Flex, TextInput } from '@svelteuidev/core';
 	import { CONTACT_MODAL, formatNumber } from '$lib/utils/contacts-utils.js'
 	import ContactInfo from '$lib/components/contacts/contact-info.svelte'
 	import { enhance } from '$app/forms'
@@ -84,7 +84,7 @@
 		{/each}
 	</SimpleGrid>
 	<Modal opened={showModal} on:close={closeModal} title="Details">
-		<form method="POST" action="?/updateRecord">
+		<form method="POST" action="?/updateRecord" use:enhance>
 			<input name="id" type="hidden" value={data.records[0].id} />
 			<ContactInfo modalData={modalData} />
 			<Flex gap="sm" mt={10} justify="right">
