@@ -1,5 +1,5 @@
 <script>
-	import { Text, TextInput } from '@svelteuidev/core';
+	import { NativeSelect, Text, TextInput } from '@svelteuidev/core';
 	import { CONTACT_MODAL, formatNumber } from '$lib/utils/contacts-utils.js';
 	export let modalData = { ...CONTACT_MODAL };
 	export let form;
@@ -30,4 +30,4 @@
 />
 <TextInput required label="City" name="City" bind:value={modalData['City']} />
 <TextInput required label="Zip" name="Zip" bind:value={modalData['Zip']} />
-<TextInput required label="State" name="State" bind:value={modalData['State']} />
+<NativeSelect required label="State" name="State" data={['PA', 'NJ']} bind:value={modalData['State']}/>
