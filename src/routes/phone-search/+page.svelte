@@ -1,9 +1,20 @@
 <script>
-	import { Notification, Modal, SimpleGrid, Card, Text, Button, Input, Flex, TextInput } from '@svelteuidev/core';
-	import { CONTACT_MODAL, formatNumber } from '$lib/utils/contacts-utils.js'
-	import ContactInfo from '$lib/components/contacts/contact-info.svelte'
-	import { enhance } from '$app/forms'
-	
+	import {
+		Notification,
+		Modal,
+		SimpleGrid,
+		Card,
+		Text,
+		Button,
+		Input,
+		Flex,
+		TextInput
+	} from '@svelteuidev/core';
+	import { CONTACT_MODAL, formatNumber } from '$lib/utils/contacts-utils.js';
+	import ContactInfo from '$lib/components/contacts/contact-info.svelte';
+	import { enhance } from '$app/forms';
+	import { page } from '$app/stores';
+
 	import MdiPen from 'virtual:icons/mdi/pen';
 
 	export let data;
@@ -12,6 +23,7 @@
 	let showModal = false;
 	let showCreationModal = false;
 	let modalData = {};
+	let phoneNumberSearch = $page.url.searchParams.get('number');
 
 	const handleModalOpen = () => {
 		showModal = true;
@@ -36,10 +48,9 @@
 
 	const handleOpenCreateModal = (e) => {
 		e.preventDefault();
-		modalData = { ...CONTACT_MODAL}
+		modalData = { ...CONTACT_MODAL };
 		showCreationModal = true;
-	}
-
+	};
 </script>
 
 <main>
@@ -57,6 +68,9 @@
 			<Button on:click={handleOpenCreateModal}>Create</Button>
 		</Flex>
 	</form>
+	{#if data.records.length === 0 && phoneNumberSearch}
+		<h1 style="margin-top: 40px">No records found</h1>
+	{/if}
 	<SimpleGrid style="margin: 1em" cols={2}>
 		{#each data.records as record}
 			<div style="position: relative">
@@ -86,16 +100,22 @@
 	<Modal opened={showModal} on:close={closeModal} title="Details">
 		<form method="POST" action="?/updateRecord" use:enhance>
 			<input name="id" type="hidden" value={data.records[0].id} />
-			<ContactInfo modalData={modalData} />
+			<ContactInfo {modalData} />
 			<Flex gap="sm" mt={10} justify="right">
 				<Button variant="outline" on:click={closeModal}>Cancel</Button>
 				<Button type="submit" on:click={() => console.log(data)}>Save</Button>
 			</Flex>
 		</form>
 	</Modal>
-	<Modal opened={showCreationModal} on:close={() => {showCreationModal = false}} title="Create Contact" >
+	<Modal
+		opened={showCreationModal}
+		on:close={() => {
+			showCreationModal = false;
+		}}
+		title="Create Contact"
+	>
 		<form method="POST" action="?/createRecord" use:enhance>
-			<ContactInfo form={form} modalData={modalData}/>
+			<ContactInfo {form} {modalData} />
 			<Flex gap="sm" mt={10} justify="right">
 				<Button variant="outline" on:click={closeModal}>Cancel</Button>
 				<Button>Create</Button>
