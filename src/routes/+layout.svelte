@@ -12,7 +12,6 @@
 		<nav>
 			<a class="active" href="/">Home</a>
 			<a href="/phone-search">Contacts</a>
-			<a href="/contacts">Contacts</a>
 		</nav>
 		<main>
 			<slot />
