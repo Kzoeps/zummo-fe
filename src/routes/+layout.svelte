@@ -3,6 +3,9 @@
 	import Header from './Header.svelte';
 	import { SvelteUIProvider, Button } from '@svelteuidev/core';
 	import './styles.css';
+
+	let year = new Date().getFullYear();
+	
 </script>
 
 <SvelteUIProvider>
@@ -12,7 +15,8 @@
 		</main>
 
 		<footer>
-			<p>visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to learn SvelteKit</p>
+				<p>Made with ❤️ by Conn Kids</p>
+				<p>Copyright Zummo {year}</p>
 		</footer>
 	</div>
 </SvelteUIProvider>
@@ -36,9 +40,10 @@
 	}
 
 	footer {
+		background-color: rgb(213, 213, 213);
 		display: flex;
-		flex-direction: column;
-		justify-content: center;
+		gap: 1rem;
+		justify-content: space-between;
 		align-items: center;
 		padding: 12px;
 	}
@@ -47,9 +52,10 @@
 		font-weight: bold;
 	}
 
+
 	@media (min-width: 480px) {
 		footer {
-			padding: 12px 0;
+			padding: 12px 12px;
 		}
 	}
 </style>
