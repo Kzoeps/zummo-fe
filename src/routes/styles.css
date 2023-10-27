@@ -41,11 +41,11 @@ p {
 }
 
 a {
-	color: var(--color-theme-1);
 	text-decoration: none;
 }
 
 a:hover {
+	cursor: pointer;
 	text-decoration: underline;
 }
 

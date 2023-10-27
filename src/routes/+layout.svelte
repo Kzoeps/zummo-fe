@@ -1,22 +1,26 @@
 <script>
-	import "../app.css"
+	import '../app.css';
 	import Header from './Header.svelte';
 	import { SvelteUIProvider, Button } from '@svelteuidev/core';
 	import './styles.css';
 
 	let year = new Date().getFullYear();
-	
 </script>
 
 <SvelteUIProvider>
 	<div class="app">
+		<nav>
+			<a class="active" href="/">Home</a>
+			<a href="/phone-search">Contacts</a>
+			<a href="/contacts">Contacts</a>
+		</nav>
 		<main>
 			<slot />
 		</main>
 
 		<footer>
-				<p>Made with ❤️ by Conn Kids</p>
-				<p>Copyright Zummo {year}</p>
+			<p>Made with ❤️ by Conn Kids</p>
+			<p>Copyright Zummo {year}</p>
 		</footer>
 	</div>
 </SvelteUIProvider>
@@ -26,6 +30,24 @@
 		display: flex;
 		flex-direction: column;
 		min-height: 100vh;
+	}
+
+	nav {
+		background-color: #e5e5e5;
+		color: #333;
+		display: flex;
+		justify-content: flex-start;
+		gap: 1rem;
+	}
+
+	nav a {
+		padding: 10px 14px;
+		font-size: 1.2em;
+	}
+
+	nav a.active {
+		background-color: rgb(34, 139, 230);
+		color: white;
 	}
 
 	main {
@@ -51,7 +73,6 @@
 	footer a {
 		font-weight: bold;
 	}
-
 
 	@media (min-width: 480px) {
 		footer {
