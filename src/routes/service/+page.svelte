@@ -2,17 +2,10 @@
     import { SvelteUIProvider, Modal, Button, TextInput, Accordion, Checkbox} from '@svelteuidev/core';
     import searchComponent from "./checklistSearch.svelte";
     import tuneUpComponent from "./tuneUpChecklist.svelte";
+    import createComponent from "./createChecklist.svelte";
 
 	let showModal = false;
     let selectedComponent = searchComponent;
-
-    function openModal() {
-        showModal = true;
-    }
-
-    function closeModal() {
-        showModal = false;
-    }
 
     function switchComponent(component) {
         selectedComponent = component;
@@ -20,6 +13,10 @@
 
     function handleOpenTuneUpModal() {
         switchComponent(tuneUpComponent);
+    }
+
+    function handleOpenCreateModal() {
+        switchComponent(createComponent);
     }
 </script>
 
@@ -37,7 +34,7 @@
         </div>
     </div>
 {:else}
-    <Button ripple>Create a new service record</Button> <br>
+    <Button on:click={showModal=true, handleOpenCreateModal} ripple>Create a new service record</Button> <br>
     <Button on:click={() => (showModal = true)} ripple>Access a service record</Button> <br>
     <Button ripple>Complete a service record</Button> <br>
 {/if}
