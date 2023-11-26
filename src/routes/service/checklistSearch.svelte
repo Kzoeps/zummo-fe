@@ -19,8 +19,6 @@
         fetch("http://127.0.0.1:5000/get-services-by-id", {method: "POST", body: JSON.stringify({"Service Bike ID": serviceRecordID}), headers })
             .then(response => response.json())
             .then(serviceData => {
-                // Console log the data to see if it's working and what it fetches
-                console.log(serviceData);
                 // Update the store with the fetched data
                 serviceDataStore.set(serviceData);
                 if ($serviceDataStore !== null) {
