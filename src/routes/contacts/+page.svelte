@@ -64,7 +64,7 @@
 				bind:value={number}
 				placeholder="Enter phone number"
 			/>
-			<Button type="submit">Search</Button>
+			<Button style="background-color: rgb(34,139,230)" type="submit" >Search</Button>
 			<Button on:click={handleOpenCreateModal}>Create</Button>
 		</Flex>
 	</form>
@@ -103,7 +103,7 @@
 			<ContactInfo {modalData} />
 			<Flex gap="sm" mt={10} justify="right">
 				<Button variant="outline" on:click={closeModal}>Cancel</Button>
-				<Button type="submit" on:click={() => console.log(data)}>Save</Button>
+				<Button type="submit" style="background-color: rgb(34,139,230)" on:click={() => console.log(data)}>Save</Button>
 			</Flex>
 		</form>
 	</Modal>
