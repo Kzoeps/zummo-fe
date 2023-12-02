@@ -1,7 +1,7 @@
 <script>
+	import { SvelteUIProvider } from '@svelteuidev/core';
 	import '../app.css';
 	import Header from './Header.svelte';
-	import { SvelteUIProvider, Button } from '@svelteuidev/core';
 	import './styles.css';
 
 	let year = new Date().getFullYear();

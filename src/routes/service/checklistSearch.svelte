@@ -1,5 +1,5 @@
 <script>
-    import { SvelteUIProvider, Modal, Button, TextInput, Accordion, Checkbox} from '@svelteuidev/core';
+    import { Button, TextInput } from '@svelteuidev/core';
     import { createEventDispatcher } from "svelte";
     import { serviceDataStore } from './dataStore';
 

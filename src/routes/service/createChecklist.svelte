@@ -1,6 +1,5 @@
 <script>
-    import { SvelteUIProvider, Textarea, Modal, Button, TextInput, Accordion, Checkbox} from '@svelteuidev/core';
-    import { onMount } from 'svelte';
+    import { Accordion, Button, Checkbox, TextInput, Textarea } from '@svelteuidev/core';
 
     // Define headers for the fetch request
     const headers = {

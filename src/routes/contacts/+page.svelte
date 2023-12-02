@@ -1,19 +1,17 @@
 <script>
-	import {
-		Notification,
-		Modal,
-		SimpleGrid,
-		Card,
-		Text,
-		Button,
-		Input,
-		Flex,
-		TextInput
-	} from '@svelteuidev/core';
-	import { CONTACT_MODAL, formatNumber } from '$lib/utils/contacts-utils.js';
-	import ContactInfo from '$lib/components/contacts/contact-info.svelte';
 	import { enhance } from '$app/forms';
 	import { page } from '$app/stores';
+	import ContactInfo from '$lib/components/contacts/contact-info.svelte';
+	import { CONTACT_MODAL, formatNumber } from '$lib/utils/contacts-utils.js';
+	import {
+		Button,
+		Card,
+		Flex,
+		Input,
+		Modal,
+		SimpleGrid,
+		Text
+	} from '@svelteuidev/core';
 
 	import MdiPen from 'virtual:icons/mdi/pen';
 

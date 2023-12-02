@@ -1,7 +1,6 @@
 <script>
-    import { SvelteUIProvider, Textarea, Modal, Button, TextInput, Accordion, Checkbox} from '@svelteuidev/core';
+    import { Accordion, Button, Checkbox, TextInput, Textarea } from '@svelteuidev/core';
     import { serviceDataStore } from './dataStore';
-    import { onMount } from 'svelte';
 
     const headers = {
         "Content-Type": "application/json"

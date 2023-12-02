@@ -1,8 +1,8 @@
 <script>
-    import { SvelteUIProvider, Modal, Button, TextInput, Accordion, Checkbox} from '@svelteuidev/core';
+    import { Button } from '@svelteuidev/core';
     import searchComponent from "./checklistSearch.svelte";
-    import tuneUpComponent from "./tuneUpChecklist.svelte";
     import createComponent from "./createChecklist.svelte";
+    import tuneUpComponent from "./tuneUpChecklist.svelte";
 
 	let showModal = false;
     let selectedComponent = searchComponent;
