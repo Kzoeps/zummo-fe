@@ -9,14 +9,12 @@
 
 <SvelteUIProvider>
 	<div class="app">
-		<nav>
-			<a class="active" href="/">Home</a>
-			<a href="/phone-search">Contacts</a>
-		</nav>
+		<Header />
+
 		<main>
 			<slot />
 		</main>
-
+		
 		<footer>
 			<p>Made with ❤️ by Conn Kids</p>
 			<p>Copyright Zummo {year}</p>
@@ -31,24 +29,6 @@
 		min-height: 100vh;
 	}
 
-	nav {
-		background-color: #e5e5e5;
-		color: #333;
-		display: flex;
-		justify-content: flex-start;
-		gap: 1rem;
-	}
-
-	nav a {
-		padding: 10px 14px;
-		font-size: 1.2em;
-	}
-
-	nav a.active {
-		background-color: rgb(34, 139, 230);
-		color: white;
-	}
-
 	main {
 		flex: 1;
 		display: flex;
@@ -59,7 +39,6 @@
 		margin: 0 auto;
 		box-sizing: border-box;
 	}
-
 	footer {
 		background-color: rgb(213, 213, 213);
 		display: flex;
@@ -67,10 +46,6 @@
 		justify-content: space-between;
 		align-items: center;
 		padding: 12px;
-	}
-
-	footer a {
-		font-weight: bold;
 	}
 
 	@media (min-width: 480px) {

@@ -1,37 +1,31 @@
 <script>
-	import Counter from './Counter.svelte';
-	import welcome from '$lib/images/zummo.png';
-	import { Chip } from '@svelteuidev/core';
+
 </script>
 
 <svelte:head>
-	<title>Zummo</title>
-	<meta name="description" content="Zummo bike management app" />
+    <title>Home</title>
+    <meta name="Home Page" content="Contains directories for software" />
 </svelte:head>
 
-<section>
-	<h1>
-		<span class="welcome">
-			<picture>
-				<img src={welcome} alt="Welcome" />
-			</picture>
-		</span>
-		Zummo-Bike
-	</h1>
+<section class="left-align">
+    <h1>
+        Welcome to ZummoBike!
+    </h1>
 
+    <h2>
+        Navigate pages using the menu above
+    </h2>
 </section>
 
 <style>
-	section {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		flex: 0.6;
-	}
+    section.left-align {
+        display: flex;
+        flex-direction: column;
+        flex: 0.6;
+        align-items: flex-start; /* Align content to the left */
+    }
 
-	h1 {
-		width: 100%;
-	}
-
+    h1, h2 {
+        margin-left: 0; /* Remove any default margins */
+    }
 </style>
