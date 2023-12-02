@@ -1,138 +1,131 @@
 <script>
     import { SvelteUIProvider, Textarea, Modal, Button, TextInput, Accordion, Checkbox} from '@svelteuidev/core';
     import { onMount } from 'svelte';
-    import { writable } from 'svelte/store';
-    import { get } from 'svelte/store';
 
-    let formData = writable({
-        // Initialize formData with default or empty values
-        "Customer First Name": "",
-        "Customer Last Name": "",
-        "Phone Number": "",
-        "Bike Information": "",
-        "Customer Comments": "",
-        "Technician Comments": "",
-        "Service Status": "",
-        "Requested Services": "",
-        "Requested Services Nested": {
-            "Tires": {
-                "Front Tire": false,
-                "Rear Tire": false,
-                "Tubes": false,
-            },
-            "Frame and Form": {
-                "Headset & Stem": false,
-                "Seatpost/Dropper": false,
-            },
-            "Suspension": {
-                "Suspension Fork": false,
-                "Rear Shock": false,
-            },
-            "Drive Train": {
-                "Chain": false,
-                "Cassette": false,
-                "Crank/Chainring": false,
-                "Cables/Housing": false,
-                "Shifters/Derailleurs": false,
-            },
-            "Rider Contact Points": {
-                "Pedals": false,
-                "Grips/Tape": false,
-            },
-            "Wheel System": {
-                "Rims": false,
-                "Spokes": false,
-                "Hubs": false,
-                "Skewer/Bolt": false,
-            },
-            "Braking System": {
-                "Capliers": false,
-                "Levers": false,
-                "Pads & Rotors /Rim Surface": false,
-                "Cables & Housing": false,
-            },
-        },
-        "Mechanic Completing Tune-Up": "",
-        "Drop-off Date": "",
-        "Requested Completion Date": "",
-    });
+    // Define headers for the fetch request
+    const headers = {
+        "Content-Type": "application/json"
+    };
 
-    // Initialize newFormData with the current values from formData
-    let newFormData = writable({
-        "Customer First Name": $formData["Customer First Name"],
-        "Customer Last Name": $formData["Customer Last Name"],
-        "Phone Number": $formData["Phone Number"],
-        "Bike Information": $formData["Bike Information"],
-        "Customer Comments": $formData["Customer Comments"],
-        "Technician Comments": $formData["Technician Comments"],
-        "Service Status": $formData["Service Status"],
-        "Requested Services": $formData["Requested Services"],
-        "Mechanic Completing Tune-Up": $formData["Mechanic Completing Tune-Up"],
-        "Drop-off Date": $formData["Drop-off Date"],
-        "Requested Completion Date": $formData["Requested Completion Date"],
-    });
+    let formData = {
+        firstName: '',
+        lastName: '',
+        phoneNumber: '',
+        bikeInformation: '',
+        customerComments: '',
+        technicianComments: '',
+        serviceStatus: '',
+        mechanic: '',
+        dropOffDate: '',
+        requestedCompletionDate: '',
+        frontTireR: false,
+        rearTireR: false,
+        tubesR: false,
+        headsetR: false,
+        seatpostR: false,
+        suspensionForkR: false,
+        rearShockR: false,
+        chainR: false,
+        cassetteR: false,
+        crankR: false,
+        cablesR: false,
+        shiftersR: false,
+        pedalsR: false,
+        gripsR: false,
+        rimsR: false,
+        spokesR: false,
+        hubsR: false,
+        skewerR: false,
+        capliersR: false,
+        leversR: false,
+        padsR: false,
+        housingR: false,
+        serviceRequested: '### Service Requested\n    [ ] Front Tire\n    [ ] Rear Tire\n    [ ] Tubes\n    [ ] Headset & Stem\n    [ ] Seatpost/Dropper\n    [ ] Suspension Fork\n    [ ] Rear Shock\n    [ ] Chain\n    [ ] Cassette\n    [ ] Crank/Chainring\n    [ ] Cables/Housing\n    [ ] Shifters/Derailleurs\n    [ ] Pedals\n    [ ] Grips/Tape\n    [ ] Rims\n    [ ] Spokes\n    [ ] Hubs\n    [ ] Skewer/Bolt\n    [ ] Capliers\n    [ ] Levers\n    [ ] Pads & Rotors /Rim Surface\n    [ ] Cables & Housing\n\n'
+    }
+
+    // Function to handle input changes
+    function handleInput(event, field) {
+        formData = { ...formData, [field]: event.target.value };
+        console.log(formData[field]);
+    }
 
     // Function to handle form submission
-    async function submitFormData() {
-        try {
-            formData.update(currentFormData => ({
-                ...currentFormData,
-                "Customer First Name": currentFormData["Customer First Name"],
-                "Customer Last Name": currentFormData["Customer Last Name"],
-                "Phone Number": currentFormData["Phone Number"],
-                "Bike Information": currentFormData["Bike Information"],
-                "Customer Comments": currentFormData["Customer Comments"],
-                "Technician Comments": currentFormData["Technician Comments"],
-                "Service Status": currentFormData["Service Status"],
-                "Mechanic Completing Tune-Up": currentFormData["Mechanic Completing Tune-Up"],
-                "Drop-off Date": currentFormData["Drop-off Date"],
-                "Requested Completion Date": currentFormData["Requested Completion Date"],
-            }));
+    async function submitForm() {
+        // Prepare data object with user inputs
+        /*formData = {
+            "First Name (from Phone Number)": firstName,
+            "Last Name (from Phone Number)": lastName,
+            "Phone Number": phoneNumber,
+            "Bike Description": bikeInformation,
+            "Customer Comments": customerComments,
+            "Technician Comments": technicianComments,
+            "Service Status": serviceStatus,
+            "Assigned Tech": mechanic,
+            "Drop-off Date": dropOffDate,
+            "Requested Completion Date": requestedCompletionDate,
+            "Front Tire R": frontTireR,
+            "Rear Tire R": rearTireR,
+            "Tubes R": tubesR,
+            "Headset & Stem R": headsetR,
+            "Seatpost/Dropper R": seatpostR,
+            "Suspension Fork R": suspensionForkR,
+            "Rear Shock R": rearShockR,
+            "Chain R": chainR,
+            "Cassette R": cassetteR,
+            "Crank/Chainring R": crankR,
+            "Cables/Housing R": cablesR,
+            "Shifters/Derailleurs R": shiftersR,
+            "Pedals R": pedalsR,
+            "Grips/Tape R": gripsR,
+            "Rims R": rimsR,
+            "Spokes R": spokesR,
+            "Hubs R": hubsR,
+            "Skewer/Bolt R": skewerR,
+            "Capliers R": capliersR,
+            "Levers R": leversR,
+            "Pads & Rotors /Rim Surface R": padsR,
+            "Cables & Housing R": housingR,
+            "Service Requested": serviceRequested
+        };*/
 
-            // Process the "Requested Services" object into a string
-            const requestedServicesString = Object.entries($formData["Requested Services Nested"]).map(([serviceCategory, services], index) => {
-                const serviceCategoryString = `### ${index + 1}. ${serviceCategory}\n`;
+        // Add the generated checkbox string to formData
+        formData["Service Requested"] = generateRequestedCheckboxString();
+        console.log(formData);
 
-                const servicesString = Object.entries(services).map(([service, checked]) => {
-                    const checkbox = checked ? "[x]" : "[ ]";
-                    return `    ${checkbox} ${service}\n`;
-                }).join('');
-
-                return `${serviceCategoryString}${servicesString}`;
-            }).join('');
-
-            // Update formData with the generated string for "Requested Services"
-            formData.update(currentFormData => ({
-                ...currentFormData,
-                "Requested Services": requestedServicesString,
-            }));
-
-            const dataToSend = {
-                fields_and_values: get(newFormData)
+        // Function to generate the checkbox string based on the current state
+        function generateRequestedCheckboxString() {
+            const checkboxLabelsByCategory = {
+                "Tires": ["Front Tire", "Rear Tire", "Tubes"],
+                "Frame and Form": ["Headset & Stem", "Seatpost/Dropper"],
+                "Suspension": ["Suspension Fork", "Rear Shock"],
+                "Drive Train": ["Chain", "Cassette", "Crank/Chainring", "Cables/Housing", "Shifters/Derailleurs"],
+                "Rider Contact Points": ["Pedals", "Grips/Tape"],
+                "Wheel System": ["Rims", "Spokes", "Hubs", "Skewer/Bolt"],
+                "Braking System": ["Capliers", "Levers", "Pads & Rotors /Rim Surface", "Cables & Housing"]
             };
 
-            // Log the data to send for testing (you can remove this line in the final version)
-            console.log("Data to Send: ", dataToSend);
-
-            const response = await fetch("http://127.0.0.1:5000/add-to-db", {
-                method: "POST",
-                body: JSON.stringify(dataToSend),
-                headers: {
-                    "Content-Type": "application/json"
-                }
+            const lines = Object.entries(checkboxLabelsByCategory).map(([currentCategory, labels], index) => {
+                const categoryLines = labels.map(label => {
+                    const checked = formData[`${label} R`] ?? false;
+                    const checkboxChecked = checked ? "[x]" : "[ ]";
+                    return `    ${checkboxChecked} ${label}`;
+                });
+                return `### ${index + 1}. ${currentCategory}\n${categoryLines.join('\n')}`;
             });
-
-            if (response.ok) {
-                const result = await response.json();
-                console.log("Add to DB Response: ", result);
-                // Handle success as needed
-            } else {
-                console.error("Error adding data to Airtable:", response.statusText);
-            }
-
-        } catch (error) {
-            console.error("Error during data submission:", error);
+            return `${lines.join('\n')}\n\n`;
         }
+
+        // Make a fetch request with user input to get the service record
+        const formDataJson = JSON.stringify(formData);
+        fetch("http://127.0.0.1:5000/add-to-db", {method: "POST", body: formDataJson, headers })
+            .then(response => response.json())
+            .then(serviceData => {
+                // Update the store with the fetched data
+                //serviceDataStore.set(serviceData);
+                //if ($serviceDataStore !== null) {
+                //    openTuneUpModal();
+                //}
+            });
     }
 </script>
 
@@ -145,60 +138,60 @@
     }
 </style>
 
-<TextInput bind:value={$formData["Customer First Name"]} label="Customer First Name"/> <br>
-<TextInput bind:value={$formData["Customer Last Name"]} label="Customer Last Name"/> <br>
-<TextInput bind:value={$formData["Phone Number"]} label="Phone Number"/> <br>
-<TextInput bind:value={$formData["Bike Information"]} label="Bike Information"/> <br>
-<Textarea bind:value={$formData["Customer Comments"]} label="Customer Comments"/> <br>
-<Textarea bind:value={$formData["Technician Comments"]} label="Technician Comments"/> <br>
-<TextInput bind:value={$formData["Service Status"]} label="Service Status"/> <br>
+<TextInput label="Customer First Name" value={formData.firstName} on:input={(event) => handleInput(event, "firstName")}/> <br>
+<TextInput label="Customer Last Name" value={formData.lastName} on:input={(event) => handleInput(event, "lastName")}/> <br>
+<TextInput label="Phone Number" value={formData.phoneNumber} on:input={(event) => handleInput(event, "phoneNumber")}/> <br>
+<TextInput label="Bike Information" value={formData.bikeInformation} on:input={(event) => handleInput(event, "bikeInformation")}/> <br>
+<Textarea label="Customer Comments"value={formData.customerComments} on:input={(event) => handleInput(event, "customerComments")}/> <br>
+<Textarea label="Technician Comments" value={formData.technicianComments} on:input={(event) => handleInput(event, "technicianComments")}/> <br>
+<TextInput label="Service Status" value={formData.serviceStatus} on:input={(event) => handleInput(event, "serviceStatus")}/> <br>
 <div class="section-label">Requested Services</div>
 <Accordion multiple=true>
     <Accordion.Item value="tires">
         <div slot="control">Tires</div>
-        <Checkbox bind:checked={$formData["Requested Services Nested"]["Tires"]["Front Tire"]} label="Front Tire" /> <br>
-        <Checkbox bind:checked={$formData["Requested Services Nested"]["Tires"]["Rear Tire"]} label="Rear Tire" /> <br>
-        <Checkbox bind:checked={$formData["Requested Services Nested"]["Tires"]["Tubes"]} label="Tubes" /> <br>
+        <Checkbox label="Front Tire" bind:checked={formData["Front Tire R"]}  /> <br>
+        <Checkbox label="Rear Tire" bind:checked={formData["Rear Tire R"]} /> <br>
+        <Checkbox label="Tubes" bind:checked={formData["Tubes R"]} /> <br>
     </Accordion.Item>
     <Accordion.Item value="frameandform">
         <div slot="control">Frame and Form</div>
-        <Checkbox bind:checked={$formData["Requested Services Nested"]["Frame and Form"]["Headset & Stem"]} label="Headset & Stem" /> <br>
-        <Checkbox bind:checked={$formData["Requested Services Nested"]["Frame and Form"]["Seatpost/Dropper"]} label="Seatpost/Dropper" /> <br>
+        <Checkbox label="Headset & Stem" bind:checked={formData["Headset & Stem R"]} /> <br>
+        <Checkbox  label="Seatpost/Dropper" bind:checked={formData["Seatpost/Dropper R"]} /> <br>
     </Accordion.Item>
     <Accordion.Item value="suspension">
         <div slot="control">Suspension</div>
-        <Checkbox bind:checked={$formData["Requested Services Nested"]["Suspension"]["Suspension Fork"]} label="Suspension Fork" /> <br>
-        <Checkbox bind:checked={$formData["Requested Services Nested"]["Suspension"]["Rear Shock"]} label="Rear Shock" /> <br>
+        <Checkbox  label="Suspension Fork" bind:checked={formData["Suspension Fork R"]} /> <br>
+        <Checkbox  label="Rear Shock" bind:checked={formData["Rear Shock R"]} /> <br>
     </Accordion.Item>
     <Accordion.Item value="drivetrain">
         <div slot="control">Drive Train</div>
-        <Checkbox bind:checked={$formData["Requested Services Nested"]["Drive Train"]["Chain"]} label="Chain" /> <br>
-        <Checkbox bind:checked={$formData["Requested Services Nested"]["Drive Train"]["Cassette"]} label="Cassette" /> <br>
-        <Checkbox bind:checked={$formData["Requested Services Nested"]["Drive Train"]["Crank/Chainring"]} label="Crank/Chainring" /> <br>
-        <Checkbox bind:checked={$formData["Requested Services Nested"]["Drive Train"]["Cables/Housing"]} label="Cables/Housing" /> <br>
-        <Checkbox bind:checked={$formData["Requested Services Nested"]["Drive Train"]["Shifters/Derailleurs"]} label="Shifters/Derailleurs" /> <br>
+        <Checkbox  label="Chain" bind:checked={formData["Chain R"]} /> <br>
+        <Checkbox  label="Cassette" bind:checked={formData["Cassette R"]} /> <br>
+        <Checkbox  label="Crank/Chainring" bind:checked={formData["Crank/Chainring R"]} /> <br>
+        <Checkbox  label="Cables/Housing" bind:checked={formData["Cables/Housing R"]} /> <br>
+        <Checkbox  label="Shifters/Derailleurs" bind:checked={formData["Shifters/Derailleurs R"]} /> <br>
     </Accordion.Item>
     <Accordion.Item value="ridercontactpoints">
         <div slot="control">Rider Contact Points</div>
-        <Checkbox bind:checked={$formData["Requested Services Nested"]["Rider Contact Points"]["Pedals"]} label="Pedals" /> <br>
-        <Checkbox bind:checked={$formData["Requested Services Nested"]["Rider Contact Points"]["Grips/Tape"]} label="Grips/Tape" /> <br>
+        <Checkbox  label="Pedals" bind:checked={formData["Pedals R"]} /> <br>
+        <Checkbox  label="Grips/Tape" bind:checked={formData["Grips/Tape R"]} /> <br>
     </Accordion.Item>
     <Accordion.Item value="wheelsystem">
         <div slot="control">Wheel System</div>
-        <Checkbox bind:checked={$formData["Requested Services Nested"]["Wheel System"]["Rims"]} label="Rims" /> <br>
-        <Checkbox bind:checked={$formData["Requested Services Nested"]["Wheel System"]["Spokes"]} label="Spokes" /> <br>
-        <Checkbox bind:checked={$formData["Requested Services Nested"]["Wheel System"]["Hubs"]} label="Hubs"/> <br>
-        <Checkbox bind:checked={$formData["Requested Services Nested"]["Wheel System"]["Skewer/Bolt"]} label="Skewer/Bolt" /> <br>
+        <Checkbox  label="Rims" bind:checked={formData["Rims R"]} /> <br>
+        <Checkbox  label="Spokes" bind:checked={formData["Spokes R"]} /> <br>
+        <Checkbox  label="Hubs" bind:checked={formData["Hubs R"]} /> <br>
+        <Checkbox  label="Skewer/Bolt" bind:checked={formData["Skewer/Bolt R"]} /> <br>
     </Accordion.Item>
     <Accordion.Item value="brakingsystem">
         <div slot="control">Braking System</div>
-        <Checkbox bind:checked={$formData["Requested Services Nested"]["Braking System"]["Capliers"]} label="Capliers" /> <br>
-        <Checkbox bind:checked={$formData["Requested Services Nested"]["Braking System"]["Levers"]} label="Levers" /> <br>
-        <Checkbox bind:checked={$formData["Requested Services Nested"]["Braking System"]["Pads & Rotors /Rim Surface"]} label="Pads & Rotors /Rim Surface" /> <br>
-        <Checkbox bind:checked={$formData["Requested Services Nested"]["Braking System"]["Cables & Housing"]} label="Cables & Housing" /> <br>
+        <Checkbox  label="Capliers" bind:checked={formData["Capliers R"]} /> <br>
+        <Checkbox  label="Levers" bind:checked={formData["Levers R"]} /> <br>
+        <Checkbox  label="Pads & Rotors /Rim Surface" bind:checked={formData["Pads & Rotors /Rim Surface R"]} /> <br>
+        <Checkbox  label="Cables & Housing" bind:checked={formData["Cables & Housing R"]} /> <br>
     </Accordion.Item>
 </Accordion> <br>
-<TextInput bind:value={$formData["Mechanic Completing Tune-Up"]} label="Mechanic Completing Tune-Up" /> <br>
-<TextInput bind:value={$formData["Drop-off Date"]} label="Drop-off Date" /> <br>
-<TextInput bind:value={$formData["Requested Completion Date"]} label="Requested Completion Date" /> <br>
-<Button on:click={submitFormData} ripple>Submit</Button> <br>
+<TextInput label="Mechanic Completing Tune-Up" value={formData.mechanic} on:input={(event) => handleInput(event, "mechanic")}/> <br>
+<TextInput label="Drop-Off Date" value={formData.dropOffDate} on:input={(event) => handleInput(event, "dropOffDate")}/> <br>
+<TextInput label="Requested Completion Date" value={formData.requestedCompletionDate} on:input={(event) => handleInput(event, "requestedCompletionDate")}/> <br>
+<Button on:click={submitForm} ripple>Submit</Button> <br>
