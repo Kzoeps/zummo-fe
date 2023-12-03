@@ -15,12 +15,17 @@
 
 	import MdiPen from 'virtual:icons/mdi/pen';
 
+	// data from the load function in +page.server.js
 	export let data;
+	// data from the actions in +page.server.js
 	export let form;
 	let number = '';
+	// showModal is for update 
 	let showModal = false;
+	// showCreationModal is the state to decide whether to show create modal
 	let showCreationModal = false;
 	let modalData = {};
+	// just for binding the ui with the searchParams. So that when you go to a link eg: `http://localhost:3000/contacts?number=1234567890`, the input field will be filled with the number 1234567890.
 	let phoneNumberSearch = $page.url.searchParams.get('number');
 
 	const handleModalOpen = () => {
@@ -41,11 +46,13 @@
 
 	const handleNumber = (e) => {
 		let num = e.target.value;
+		// formatNumber is a function that formats number in a way that has been saved on airtable, so in this format: (xxx) xxx-xxxx
 		number = formatNumber(num);
 	};
 
 	const handleOpenCreateModal = (e) => {
 		e.preventDefault();
+		// CONTACT_MODAL is an object which holds the default values (basically empty strings) for each of the fields.
 		modalData = { ...CONTACT_MODAL };
 		showCreationModal = true;
 	};

@@ -56,3 +56,11 @@ We chose `SvelteKit` since svelte is syntactically the most similar to plain `HT
 |--all the others are config files for svelte, please do not touch.   
 
 ```
+
+### Key Info
+1. If you want to create a new page eg: /about then please follow these steps:
+    - create a folder withing the routes and give it the name of whatever path you're trying to create: about in this case
+    - inside of the about folder create a file called +page.svelte, there you go now you have an about page
+2. Most of the work Alex and I have done are in the folders `/src/routes/contacts` & `/src/routes/service`
+    - Documentation for those can be found within their respective components
+3. +page.js or +page.server.js are files that will only be executed on the server, (note this isn't really important if you are not deploying this somewhere)
