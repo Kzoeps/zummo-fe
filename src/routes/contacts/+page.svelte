@@ -1,17 +1,10 @@
 <script>
+	import { Alert } from '@svelteuidev/core';
 	import { enhance } from '$app/forms';
 	import { page } from '$app/stores';
 	import ContactInfo from '$lib/components/contacts/contact-info.svelte';
 	import { CONTACT_MODAL, formatNumber } from '$lib/utils/contacts-utils.js';
-	import {
-		Button,
-		Card,
-		Flex,
-		Input,
-		Modal,
-		SimpleGrid,
-		Text
-	} from '@svelteuidev/core';
+	import { Button, Card, Flex, Input, Modal, SimpleGrid, Text } from '@svelteuidev/core';
 
 	import MdiPen from 'virtual:icons/mdi/pen';
 
@@ -19,8 +12,10 @@
 	export let data;
 	// data from the actions in +page.server.js
 	export let form;
+	let activeId = '';
 	let number = '';
-	// showModal is for update 
+	let showSnackbar = false;
+	// showModal is for update
 	let showModal = false;
 	// showCreationModal is the state to decide whether to show create modal
 	let showCreationModal = false;
@@ -28,9 +23,19 @@
 	// just for binding the ui with the searchParams. So that when you go to a link eg: `http://localhost:3000/contacts?number=1234567890`, the input field will be filled with the number 1234567890.
 	let phoneNumberSearch = $page.url.searchParams.get('number');
 
-	const handleModalOpen = () => {
+	$: if (form?.success) {
+		showSnackbar = true;
+		showModal = false;
+		setTimeout(() => {
+			showSnackbar = false;
+		}, 2000);
+	}
+
+	const handleModalOpen = (id) => {
 		showModal = true;
-		modalData = data?.records?.[0]?.fields ? { ...data.records[0].fields } : {};
+		activeId = id;
+		const recordData = data?.records?.find((record) => record.id === id)?.fields;
+		modalData = recordData ? { ...recordData } : {};
 	};
 	const getName = (record) => {
 		return `${record['First Name']} ${record['Last Name']}`;
@@ -69,7 +74,7 @@
 				bind:value={number}
 				placeholder="Enter phone number"
 			/>
-			<Button style="background-color: rgb(34,139,230)" type="submit" >Search</Button>
+			<Button style="background-color: rgb(34,139,230)" type="submit">Search</Button>
 			<Button on:click={handleOpenCreateModal}>Create</Button>
 		</Flex>
 	</form>
@@ -95,7 +100,7 @@
 					</Card.Section>
 				</Card>
 				<Button
-					on:click={handleModalOpen}
+					on:click={() => handleModalOpen(record.id)}
 					style="width: 50px; border-radius: 50%; height: 50px; position: absolute; right: -10px; top: -10px"
 					><MdiPen /></Button
 				>
@@ -104,11 +109,15 @@
 	</SimpleGrid>
 	<Modal opened={showModal} on:close={closeModal} title="Details">
 		<form method="POST" action="?/updateRecord" use:enhance>
-			<input name="id" type="hidden" value={data.records[0].id} />
+			<input name="id" type="hidden" value={activeId} />
 			<ContactInfo {modalData} />
 			<Flex gap="sm" mt={10} justify="right">
 				<Button variant="outline" on:click={closeModal}>Cancel</Button>
-				<Button type="submit" style="background-color: rgb(34,139,230)" on:click={() => console.log(data)}>Save</Button>
+				<Button
+					type="submit"
+					style="background-color: rgb(34,139,230)"
+					on:click={() => console.log(data)}>Save</Button
+				>
 			</Flex>
 		</form>
 	</Modal>
@@ -127,4 +136,10 @@
 			</Flex>
 		</form>
 	</Modal>
+	{#if showSnackbar}
+		<Alert style="position: absolute; bottom: 4rem; right: 3rem" title="Success!" color="green">
+			{form?.message}
+		</Alert>
+	{/if}
+	
 </main>

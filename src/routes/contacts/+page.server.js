@@ -73,7 +73,8 @@ export const actions = {
 			// body to send to airtable needs to be in json format
 			body: JSON.stringify(requestData)
 		});
-		return await response.json();
+		const jsonRes = await response.json();
+		return { success: true, message: "Record updated successfully", data: jsonRes}
 	},
 	createRecord: async ({ request }) => {
 		const data = await request.formData();
@@ -96,6 +97,7 @@ export const actions = {
 			method: 'POST',
 			body: JSON.stringify(parsedData)
 		});
-		return await response.json();
+		const jsonRes = await response.json();
+		return { success: true, message: "Record created successfully", data: jsonRes}
 	}
 };
