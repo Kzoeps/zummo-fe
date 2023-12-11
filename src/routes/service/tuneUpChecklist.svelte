@@ -1,6 +1,13 @@
 <script>
     import { Accordion, Button, Checkbox, TextInput, Textarea } from '@svelteuidev/core';
     import { serviceDataStore } from './dataStore';
+    import { createEventDispatcher } from "svelte";
+
+    const dispatch = createEventDispatcher();
+
+    async function openProcessedModal() {
+        dispatch('open-processed-modal');
+    }
 
     const headers = {
         "Content-Type": "application/json"
@@ -66,16 +73,16 @@
     let hubs = serviceData[0]?.fields["Hubs"] || false;
     let skewerR = serviceData[0]?.fields["Skewer/Bolt R"] || false;
     let skewer = serviceData[0]?.fields["Skewer/Bolt"] || false;
-    let capliersR = serviceData[0]?.fields["Capliers R"] || false;
-    let capliers = serviceData[0]?.fields["Capliers"] || false;
+    let calipersR = serviceData[0]?.fields["Calipers R"] || false;
+    let calipers = serviceData[0]?.fields["Calipers"] || false;
     let leversR = serviceData[0]?.fields["Levers R"] || false;
     let levers = serviceData[0]?.fields["Levers"] || false;
     let padsR = serviceData[0]?.fields["Pads & Rotors /Rim Surface R"] || false;
     let pads = serviceData[0]?.fields["Pads & Rotors /Rim Surface"] || false;
     let housingR = serviceData[0]?.fields["Cables & Housing R"] || false;
     let housing = serviceData[0]?.fields["Cables & Housing"] || false;
-    let servicePerformed = serviceData[0]?.fields["Service Performed"] || '### Service Performed\n    [ ] Front Tire\n    [ ] Rear Tire\n    [ ] Tubes\n    [ ] Headset & Stem\n    [ ] Seatpost/Dropper\n    [ ] Suspension Fork\n    [ ] Rear Shock\n    [ ] Chain\n    [ ] Cassette\n    [ ] Crank/Chainring\n    [ ] Cables/Housing\n    [ ] Shifters/Derailleurs\n    [ ] Pedals\n    [ ] Grips/Tape\n    [ ] Rims\n    [ ] Spokes\n    [ ] Hubs\n    [ ] Skewer/Bolt\n    [ ] Capliers\n    [ ] Levers\n    [ ] Pads & Rotors /Rim Surface\n    [ ] Cables & Housing\n\n';
-    let serviceRequested = serviceData[0]?.fields["Service Requested"] || '### Service Requested\n    [ ] Front Tire\n    [ ] Rear Tire\n    [ ] Tubes\n    [ ] Headset & Stem\n    [ ] Seatpost/Dropper\n    [ ] Suspension Fork\n    [ ] Rear Shock\n    [ ] Chain\n    [ ] Cassette\n    [ ] Crank/Chainring\n    [ ] Cables/Housing\n    [ ] Shifters/Derailleurs\n    [ ] Pedals\n    [ ] Grips/Tape\n    [ ] Rims\n    [ ] Spokes\n    [ ] Hubs\n    [ ] Skewer/Bolt\n    [ ] Capliers\n    [ ] Levers\n    [ ] Pads & Rotors /Rim Surface\n    [ ] Cables & Housing\n\n';
+    let servicePerformed = serviceData[0]?.fields["Service Performed"] || '### Service Performed\n    [ ] Front Tire\n    [ ] Rear Tire\n    [ ] Tubes\n    [ ] Headset & Stem\n    [ ] Seatpost/Dropper\n    [ ] Suspension Fork\n    [ ] Rear Shock\n    [ ] Chain\n    [ ] Cassette\n    [ ] Crank/Chainring\n    [ ] Cables/Housing\n    [ ] Shifters/Derailleurs\n    [ ] Pedals\n    [ ] Grips/Tape\n    [ ] Rims\n    [ ] Spokes\n    [ ] Hubs\n    [ ] Skewer/Bolt\n    [ ] Calipers\n    [ ] Levers\n    [ ] Pads & Rotors /Rim Surface\n    [ ] Cables & Housing\n\n';
+    let serviceRequested = serviceData[0]?.fields["Service Requested"] || '### Service Requested\n    [ ] Front Tire\n    [ ] Rear Tire\n    [ ] Tubes\n    [ ] Headset & Stem\n    [ ] Seatpost/Dropper\n    [ ] Suspension Fork\n    [ ] Rear Shock\n    [ ] Chain\n    [ ] Cassette\n    [ ] Crank/Chainring\n    [ ] Cables/Housing\n    [ ] Shifters/Derailleurs\n    [ ] Pedals\n    [ ] Grips/Tape\n    [ ] Rims\n    [ ] Spokes\n    [ ] Hubs\n    [ ] Skewer/Bolt\n    [ ] Calipers\n    [ ] Levers\n    [ ] Pads & Rotors /Rim Surface\n    [ ] Cables & Housing\n\n';
 
     function updateCheckboxes(){
         //Check if there is defined data
@@ -94,7 +101,7 @@
                 "Chain", "Cassette", "Crank/Chainring", "Cables/Housing", "Shifters/Derailleurs",
                 "Pedals", "Grips/Tape",
                 "Rims", "Spokes", "Hubs", "Skewer/Bolt",
-                "Capliers", "Levers", "Pads & Rotors /Rim Surface", "Cables & Housing"
+                "Calipers", "Levers", "Pads & Rotors /Rim Surface", "Cables & Housing"
             ];
 
             // Create a new object to store updated checkbox values
@@ -105,7 +112,7 @@
                 "Chain":false, "Cassette":false, "Crank/Chainring":false, "Cables/Housing":false, "Shifters/Derailleurs":false,
                 "Pedals":false, "Grips/Tape":false,
                 "Rims":false, "Spokes":false, "Hubs":false, "Skewer/Bolt":false,
-                "Capliers":false, "Levers":false, "Pads & Rotors /Rim Surface":false, "Cables & Housing":false
+                "Calipers":false, "Levers":false, "Pads & Rotors /Rim Surface":false, "Cables & Housing":false
             };
 
             // Iterate through the lines
@@ -143,7 +150,7 @@
                 "Chain R", "Cassette R", "Crank/Chainring R", "Cables/Housing R", "Shifters/Derailleurs R",
                 "Pedals R", "Grips/Tape R",
                 "Rims R", "Spokes R", "Hubs R", "Skewer/Bolt R",
-                "Capliers R", "Levers R", "Pads & Rotors /Rim Surface R", "Cables & Housing R"
+                "Calipers R", "Levers R", "Pads & Rotors /Rim Surface R", "Cables & Housing R"
             ];
 
             // Create a new object to store updated checkbox values
@@ -154,7 +161,7 @@
                 "Chain R":false, "Cassette R":false, "Crank/Chainring R":false, "Cables/Housing R":false, "Shifters/Derailleurs R":false,
                 "Pedals R":false, "Grips/Tape R":false,
                 "Rims R":false, "Spokes R":false, "Hubs R":false, "Skewer/Bolt R":false,
-                "Capliers R":false, "Levers R":false, "Pads & Rotors /Rim Surface R":false, "Cables & Housing R":false
+                "Calipers R":false, "Levers R":false, "Pads & Rotors /Rim Surface R":false, "Cables & Housing R":false
             };
 
             // Iterate through the lines
@@ -232,8 +239,8 @@
         serviceData[0].fields["Hubs"] = hubs;
         serviceData[0].fields["Skewer/Bolt R"] = skewerR;
         serviceData[0].fields["Skewer/Bolt"] = skewer;
-        serviceData[0].fields["Capliers R"] = capliersR;
-        serviceData[0].fields["Capliers"] = capliers;
+        serviceData[0].fields["Calipers R"] = calipersR;
+        serviceData[0].fields["Calipers"] = calipers;
         serviceData[0].fields["Levers R"] = leversR;
         serviceData[0].fields["Levers"] = levers;
         serviceData[0].fields["Pads & Rotors /Rim Surface R"] = padsR;
@@ -255,7 +262,7 @@
                 "Drive Train": ["Chain", "Cassette", "Crank/Chainring", "Cables/Housing", "Shifters/Derailleurs"],
                 "Rider Contact Points": ["Pedals", "Grips/Tape"],
                 "Wheel System": ["Rims", "Spokes", "Hubs", "Skewer/Bolt"],
-                "Braking System": ["Capliers", "Levers", "Pads & Rotors /Rim Surface", "Cables & Housing"]
+                "Braking System": ["Calipers", "Levers", "Pads & Rotors /Rim Surface", "Cables & Housing"]
             };
 
             const lines = Object.entries(checkboxLabelsByCategory).map(([currentCategory, labels], index) => {
@@ -277,7 +284,7 @@
                 "Drive Train": ["Chain", "Cassette", "Crank/Chainring", "Cables/Housing", "Shifters/Derailleurs"],
                 "Rider Contact Points": ["Pedals", "Grips/Tape"],
                 "Wheel System": ["Rims", "Spokes", "Hubs", "Skewer/Bolt"],
-                "Braking System": ["Capliers", "Levers", "Pads & Rotors /Rim Surface", "Cables & Housing"]
+                "Braking System": ["Calipers", "Levers", "Pads & Rotors /Rim Surface", "Cables & Housing"]
             };
 
             const lines = Object.entries(checkboxLabelsByCategory).map(([currentCategory, labels], index) => {
@@ -296,6 +303,7 @@
         fetch("http://127.0.0.1:5000/edit-db", {method: "POST", body: serviceDataJson, headers })
             .then(response => response.json())
             .then(serviceData => {
+                openProcessedModal();
                 // Update the store with the fetched data
                 //serviceDataStore.set(serviceData);
                 //if ($serviceDataStore !== null) {
@@ -319,9 +327,9 @@
     }
 </style>
 
-<TextInput label="Customer First Name" value={firstName} on:input={(event) => handleInput(event, "First Name (from Phone Number)")}/> <br>
-<TextInput label="Customer Last Name" value={lastName} on:input={(event) => handleInput(event, "Last Name (from Phone Number)")}/> <br>
-<TextInput label="Phone Number" value={phoneNumber} on:input={(event) => handleInput(event, "Phone Number")}/> <br>
+<div>Customer First Name: {firstName}</div> <br>
+<div>Customer Last Name: {lastName}</div> <br>
+<div>Phone Number: {phoneNumber}</div> <br>
 <TextInput label="Bike Information" value={bikeInformation} on:input={(event) => handleInput(event, "Bike Description")}/> <br>
 <Textarea label="Customer Comments"value={customerComments} on:input={(event) => handleInput(event, "Customer Comments")}/> <br>
 <Textarea label="Technician Comments" value={technicianComments} on:input={(event) => handleInput(event, "Technician Comments")}/> <br>
@@ -384,8 +392,8 @@
     </Accordion.Item>
     <Accordion.Item value="brakingsystem">
         <div slot="control">Braking System</div>
-        <Checkbox  label="Capliers" bind:checked={capliersR} /> <br>
-        <div class="indented-checkbox"><Checkbox label="Performed" size="sm" bind:checked={capliers} /></div> <br>
+        <Checkbox  label="Calipers" bind:checked={calipersR} /> <br>
+        <div class="indented-checkbox"><Checkbox label="Performed" size="sm" bind:checked={calipers} /></div> <br>
         <Checkbox  label="Levers" bind:checked={leversR} /> <br>
         <div class="indented-checkbox"><Checkbox label="Performed" size="sm" bind:checked={levers} /></div> <br>
         <Checkbox  label="Pads & Rotors /Rim Surface" bind:checked={padsR} /> <br>
@@ -394,7 +402,7 @@
         <div class="indented-checkbox"><Checkbox label="Performed" size="sm" bind:checked={housing} /></div> <br>
     </Accordion.Item>
 </Accordion> <br>
-<TextInput label="Mechanic Completing Tune-Up" value={mechanic} on:input={(event) => handleInput(event, "Assigned Tech")}/> <br>
-<TextInput label="Drop-Off Date" value={dropOffDate} on:input={(event) => handleInput(event, "Drop-off Date")}/> <br>
-<TextInput label="Requested Completion Date" value={requestedCompletionDate} on:input={(event) => handleInput(event, "Requested Completion Date")}/> <br>
+<div>Mechanic Completing Tune-Up: {mechanic}</div> <br>
+<TextInput label="Drop-Off Date" value={dropOffDate} on:input={(event) => handleInput(event, "Drop-off date")}/> <br>
+<TextInput label="Requested Completion Date" value={requestedCompletionDate} on:input={(event) => handleInput(event, "Requested completion date")}/> <br>
 <Button on:click={updateAirtable} ripple>Submit</Button> <br>
