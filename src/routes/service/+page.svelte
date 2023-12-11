@@ -3,6 +3,7 @@
     import searchComponent from "./checklistSearch.svelte";
     import createComponent from "./createChecklist.svelte";
     import tuneUpComponent from "./tuneUpChecklist.svelte";
+    import processedComponent from "./processed.svelte";
 
 	let showModal = false;
     let selectedComponent = searchComponent;
@@ -18,6 +19,10 @@
     function handleOpenCreateModal() {
         switchComponent(createComponent);
     }
+
+    function handleOpenProcessedModal() {
+        switchComponent(processedComponent);
+    }
 </script>
 
 <svelte:head>
@@ -28,7 +33,7 @@
 {#if showModal}
     <div class="modal">
         <div class="modal-content">
-            <svelte:component this={selectedComponent} on:open-tune-up-modal={handleOpenTuneUpModal} /> <br>
+            <svelte:component this={selectedComponent} on:open-tune-up-modal={handleOpenTuneUpModal} on:open-processed-modal={handleOpenProcessedModal}/> <br>
 
             <Button on:click={() => (showModal = false, selectedComponent = searchComponent)} ripple>Back</Button> <br>
         </div>

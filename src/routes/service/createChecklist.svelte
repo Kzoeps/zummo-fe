@@ -1,5 +1,12 @@
 <script>
     import { Accordion, Button, Checkbox, TextInput, Textarea } from '@svelteuidev/core';
+    import { createEventDispatcher } from "svelte";
+
+    const dispatch = createEventDispatcher();
+
+    async function openProcessedModal() {
+        dispatch('open-processed-modal');
+    }
 
     // Define headers for the fetch request
     const headers = {
@@ -35,11 +42,11 @@
         spokesR: false,
         hubsR: false,
         skewerR: false,
-        capliersR: false,
+        calipersR: false,
         leversR: false,
         padsR: false,
         housingR: false,
-        serviceRequested: '### Service Requested\n    [ ] Front Tire\n    [ ] Rear Tire\n    [ ] Tubes\n    [ ] Headset & Stem\n    [ ] Seatpost/Dropper\n    [ ] Suspension Fork\n    [ ] Rear Shock\n    [ ] Chain\n    [ ] Cassette\n    [ ] Crank/Chainring\n    [ ] Cables/Housing\n    [ ] Shifters/Derailleurs\n    [ ] Pedals\n    [ ] Grips/Tape\n    [ ] Rims\n    [ ] Spokes\n    [ ] Hubs\n    [ ] Skewer/Bolt\n    [ ] Capliers\n    [ ] Levers\n    [ ] Pads & Rotors /Rim Surface\n    [ ] Cables & Housing\n\n'
+        serviceRequested: '### Service Requested\n    [ ] Front Tire\n    [ ] Rear Tire\n    [ ] Tubes\n    [ ] Headset & Stem\n    [ ] Seatpost/Dropper\n    [ ] Suspension Fork\n    [ ] Rear Shock\n    [ ] Chain\n    [ ] Cassette\n    [ ] Crank/Chainring\n    [ ] Cables/Housing\n    [ ] Shifters/Derailleurs\n    [ ] Pedals\n    [ ] Grips/Tape\n    [ ] Rims\n    [ ] Spokes\n    [ ] Hubs\n    [ ] Skewer/Bolt\n    [ ] Calipers\n    [ ] Levers\n    [ ] Pads & Rotors /Rim Surface\n    [ ] Cables & Housing\n\n'
     }
 
     // Function to handle input changes
@@ -80,7 +87,7 @@
             "Spokes R": spokesR,
             "Hubs R": hubsR,
             "Skewer/Bolt R": skewerR,
-            "Capliers R": capliersR,
+            "Calipers R": calipersR,
             "Levers R": leversR,
             "Pads & Rotors /Rim Surface R": padsR,
             "Cables & Housing R": housingR,
@@ -100,7 +107,7 @@
                 "Drive Train": ["Chain", "Cassette", "Crank/Chainring", "Cables/Housing", "Shifters/Derailleurs"],
                 "Rider Contact Points": ["Pedals", "Grips/Tape"],
                 "Wheel System": ["Rims", "Spokes", "Hubs", "Skewer/Bolt"],
-                "Braking System": ["Capliers", "Levers", "Pads & Rotors /Rim Surface", "Cables & Housing"]
+                "Braking System": ["Calipers", "Levers", "Pads & Rotors /Rim Surface", "Cables & Housing"]
             };
 
             const lines = Object.entries(checkboxLabelsByCategory).map(([currentCategory, labels], index) => {
@@ -119,6 +126,7 @@
         fetch("http://127.0.0.1:5000/add-to-db", {method: "POST", body: formDataJson, headers })
             .then(response => response.json())
             .then(serviceData => {
+                openProcessedModal();
                 // Update the store with the fetched data
                 //serviceDataStore.set(serviceData);
                 //if ($serviceDataStore !== null) {
@@ -137,8 +145,6 @@
     }
 </style>
 
-<TextInput label="Customer First Name" value={formData.firstName} on:input={(event) => handleInput(event, "firstName")}/> <br>
-<TextInput label="Customer Last Name" value={formData.lastName} on:input={(event) => handleInput(event, "lastName")}/> <br>
 <TextInput label="Phone Number" value={formData.phoneNumber} on:input={(event) => handleInput(event, "phoneNumber")}/> <br>
 <TextInput label="Bike Information" value={formData.bikeInformation} on:input={(event) => handleInput(event, "bikeInformation")}/> <br>
 <Textarea label="Customer Comments"value={formData.customerComments} on:input={(event) => handleInput(event, "customerComments")}/> <br>
@@ -184,7 +190,7 @@
     </Accordion.Item>
     <Accordion.Item value="brakingsystem">
         <div slot="control">Braking System</div>
-        <Checkbox  label="Capliers" bind:checked={formData["Capliers R"]} /> <br>
+        <Checkbox  label="Calipers" bind:checked={formData["Calipers R"]} /> <br>
         <Checkbox  label="Levers" bind:checked={formData["Levers R"]} /> <br>
         <Checkbox  label="Pads & Rotors /Rim Surface" bind:checked={formData["Pads & Rotors /Rim Surface R"]} /> <br>
         <Checkbox  label="Cables & Housing" bind:checked={formData["Cables & Housing R"]} /> <br>
